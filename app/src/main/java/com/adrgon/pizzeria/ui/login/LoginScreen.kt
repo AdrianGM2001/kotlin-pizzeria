@@ -39,7 +39,7 @@ fun Login(viewModel: LoginViewModel)  {
     ) {
         item {
             Image(
-                painter = painterResource(R.drawable.logomalo),
+                painter = painterResource(R.drawable.logo),
                 contentDescription = "Logo Pizzeria"
             )
 

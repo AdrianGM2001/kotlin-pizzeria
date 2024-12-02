@@ -1,7 +1,7 @@
-package com.adrgon.practica1.modelo
+package com.adrgon.pizzeria.data
 
 data class IngredienteDTO (
-    val id: Int,
-    val nombre: String,
-    val alergenos: List<String>
+    val id: Int = 0,
+    val nombre: String = "",
+    val alergenos: List<String> = emptyList()
 )

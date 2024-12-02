@@ -19,7 +19,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.adrgon.pizzeria.R
 import com.adrgon.pizzeria.data.ClienteDTO
-import com.adrgon.pizzeria.data.ErrorMessage
 import com.adrgon.pizzeria.ui.componentes.OutlinedTextFieldPizzeria
 
 private const val nombreLabel = "Nombre"
@@ -49,7 +48,7 @@ fun Registro(viewModel: RegistroViewModel)  {
     ) {
         item {
             Image(
-                painter = painterResource(R.drawable.logomalo),
+                painter = painterResource(R.drawable.logo),
                 contentDescription = "Logo Pizzeria"
             )
 

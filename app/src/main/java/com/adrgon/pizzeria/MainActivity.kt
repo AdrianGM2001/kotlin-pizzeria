@@ -3,6 +3,9 @@ package com.adrgon.pizzeria
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.adrgon.pizzeria.ui.home.Home
+import com.adrgon.pizzeria.ui.home.HomeScreen
+import com.adrgon.pizzeria.ui.home.HomeViewModel
 import com.adrgon.pizzeria.ui.login.Login
 import com.adrgon.pizzeria.ui.login.LoginViewModel
 import com.adrgon.pizzeria.ui.registro.Registro
@@ -15,7 +18,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             PizzeriaTheme() {
                 //Login(LoginViewModel())
-                Registro(RegistroViewModel())
+                //Registro(RegistroViewModel())
+                HomeScreen(HomeViewModel())
             }
         }
     }

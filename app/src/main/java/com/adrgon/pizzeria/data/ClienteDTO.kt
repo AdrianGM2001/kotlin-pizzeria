@@ -1,7 +1,5 @@
 package com.adrgon.pizzeria.data
 
-import com.adrgon.practica1.modelo.PedidoDTO
-
 data class ClienteDTO (
     val id: Int? = null,
     val dni: String = "",

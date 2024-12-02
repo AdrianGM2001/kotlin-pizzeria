@@ -256,7 +256,7 @@ fun PizzeriaTheme(
     content: @Composable() () -> Unit
 ) {
   MaterialTheme(
-    colorScheme = darkScheme,
+    colorScheme = lightScheme,
     typography = AppTypography,
     content = content
   )

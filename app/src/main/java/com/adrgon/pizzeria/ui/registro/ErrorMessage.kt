@@ -1,4 +1,4 @@
-package com.adrgon.pizzeria.data
+package com.adrgon.pizzeria.ui.registro
 
 data class ErrorMessage(
     var nombre: String? = null,

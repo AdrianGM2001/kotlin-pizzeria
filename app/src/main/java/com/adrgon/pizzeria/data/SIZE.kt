@@ -1,3 +1,7 @@
-package com.adrgon.practica1.modelo
+package com.adrgon.pizzeria.data
 
-enum class SIZE { PEQUEÑO, MEDIANO, GRANDE }
+enum class SIZE(val nombre: String) {
+    PEQUENYO("Pequeño"),
+    MEDIANO("Mediano"),
+    GRANDE("Grande");
+}

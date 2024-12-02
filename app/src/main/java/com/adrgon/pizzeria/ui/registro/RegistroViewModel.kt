@@ -1,10 +1,9 @@
 package com.adrgon.pizzeria.ui.registro
 
 import android.util.Log
-import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import com.adrgon.pizzeria.data.ClienteDTO
-import com.adrgon.pizzeria.data.ErrorMessage
+import com.adrgon.pizzeria.utilidades.Validar
 
 class RegistroViewModel {
     val cliente = MutableLiveData(ClienteDTO())
@@ -18,23 +17,9 @@ class RegistroViewModel {
     fun onClienteChange(cliente: ClienteDTO) {
         this.cliente.value = cliente
 
-        val errorNombre: String? =
-            if (!cliente.nombre.matches("[a-zA-Z]+".toRegex()) && cliente.nombre.isNotEmpty())
-                mensajeErrorNombre
-            else null
-
-        val errorEmail: String? =
-            if (!cliente.email.matches(
-                    Patterns.EMAIL_ADDRESS.pattern().toRegex()
-                ) && cliente.email.isNotEmpty()
-            )
-                mensajeErrorEmail
-            else null
-
-        val errorPassword: String? =
-            if (cliente.password.length < 4 && cliente.password.isNotEmpty())
-                mensajeErrorPassword
-            else null
+        val errorNombre = if (Validar.validarNombre(cliente.nombre)) mensajeErrorNombre else null
+        val errorEmail = if (Validar.validarEmail(cliente.email)) mensajeErrorEmail else null
+        val errorPassword = if (Validar.validarPassword(cliente.password)) mensajeErrorPassword else null
 
         error.value = ErrorMessage(errorNombre, errorEmail, errorPassword)
 
