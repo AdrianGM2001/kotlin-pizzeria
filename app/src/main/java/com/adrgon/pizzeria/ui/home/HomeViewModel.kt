@@ -3,15 +3,20 @@ package com.adrgon.pizzeria.ui.home
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.adrgon.pizzeria.R
-import com.adrgon.pizzeria.data.IngredienteDTO
-import com.adrgon.pizzeria.data.LineaPedidoDTO
-import com.adrgon.pizzeria.data.PedidoDTO
-import com.adrgon.pizzeria.data.ProductoDTO
-import com.adrgon.pizzeria.data.TIPO
-import com.adrgon.pizzeria.data.TarjetaDTO
+import com.adrgon.pizzeria.data.model.LineaPedidoDTO
+import com.adrgon.pizzeria.data.model.PedidoDTO
+import com.adrgon.pizzeria.data.model.ProductoDTO
+import com.adrgon.pizzeria.data.repositories.ProductoRepository
+import com.adrgon.pizzeria.data.model.Tipo
+import com.adrgon.pizzeria.data.uimodel.TarjetaDTO
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class HomeViewModel {
+class HomeViewModel(private val productoRepository: ProductoRepository) : ViewModel() {
     private val _tarjetas: MutableLiveData<List<TarjetaDTO>> = MutableLiveData()
     val tarjetas: LiveData<List<TarjetaDTO>> = _tarjetas
 
@@ -29,203 +34,50 @@ class HomeViewModel {
     }
 
     private fun cargarProductos() {
-        // Ingredientes
-        val ingredienteMozzarella = IngredienteDTO(nombre = "Mozzarella", alergenos = listOf("Lactosa", "Gluten"))
-        val ingredienteParmesano = IngredienteDTO(nombre = "Parmesano", alergenos = listOf("Lactosa"))
-        val ingredienteGorgonzola = IngredienteDTO(nombre = "Gorgonzola", alergenos = listOf("Lactosa"))
-        val ingredienteRicotta = IngredienteDTO(nombre = "Ricotta", alergenos = listOf("Lactosa"))
-        val ingredienteTomate = IngredienteDTO(nombre = "Tomate")
-        val ingredienteAceitunas = IngredienteDTO(nombre = "Aceitunas negras", alergenos = listOf("Sulfitos"))
-        val ingredientePinya = IngredienteDTO(nombre = "Piña", alergenos = listOf("Sulfitos"))
-        val ingredientePimiento = IngredienteDTO(nombre = "Pimiento", alergenos = listOf("Apio"))
-        val ingredienteCebolla = IngredienteDTO(nombre = "Cebolla")
-        val ingredienteChampinyones = IngredienteDTO(nombre = "Champiñones")
-        val ingredientePepperoni = IngredienteDTO(nombre = "Pepperoni", alergenos = listOf("Sulfitos"))
-        val ingredientePollo = IngredienteDTO(nombre = "Pollo", alergenos = listOf("Mostaza"))
-        val ingredienteBacon = IngredienteDTO(nombre = "Bacon", alergenos = listOf("Sulfitos"))
-        val ingredienteSalchicha = IngredienteDTO(nombre = "Salchicha italiana", alergenos = listOf("Lactosa", "Sulfitos"))
-        val ingredienteJamon = IngredienteDTO(nombre = "Jamón", alergenos = listOf("Lactosa", "Sulfitos"))
-        val ingredienteMacarrones = IngredienteDTO(nombre = "Macarrones", alergenos = listOf("Gluten"))
-        val ingredienteEspaguetis = IngredienteDTO(nombre = "Espaguetis", alergenos = listOf("Gluten"))
-        val ingredienteTernera = IngredienteDTO(nombre = "Ternera")
-        val ingredienteQueso = IngredienteDTO(nombre = "Queso", alergenos = listOf("Lactosa"))
-
-        _tarjetasPizza.value = listOf(
-            TarjetaDTO(
-                producto = ProductoDTO(
-                    nombre = "Hot-N-Ready Pepperoni",
-                    precio = 10.99,
-                    tipo = TIPO.PIZZA,
-                    ingredientes = listOf(ingredientePepperoni, ingredienteMozzarella, ingredienteTomate, ingredienteCebolla)
-                ),
-                idImagen = R.drawable.pipsa1
-            ),
-            TarjetaDTO(
-                producto = ProductoDTO(
-                    nombre = "Hot-N-Ready Cheese",
-                    precio = 10.99,
-                    tipo = TIPO.PIZZA,
-                    ingredientes = listOf(ingredienteMozzarella, ingredienteParmesano, ingredienteRicotta, ingredienteGorgonzola ,ingredienteTomate)
-                ),
-                idImagen = R.drawable.pipsa2
-            ),
-            TarjetaDTO(
-                producto = ProductoDTO(
-                    nombre = "Sweet N Spicy Chicken",
-                    precio = 16.2,
-                    tipo = TIPO.PIZZA,
-                    ingredientes = listOf(ingredientePollo, ingredienteMozzarella, ingredienteCebolla, ingredienteTomate)
-                ),
-                idImagen = R.drawable.pipsa3
-            ),
-            TarjetaDTO(
-                producto = ProductoDTO(
-                    nombre = "BBQ Chicken", precio = 16.2, tipo = TIPO.PIZZA, ingredientes = listOf(ingredientePollo, ingredienteMozzarella, ingredienteBacon, ingredienteCebolla, ingredienteTomate)
-                ),
-                idImagen = R.drawable.pipsa4
-            ),
-            TarjetaDTO(
-                producto = ProductoDTO(
-                    nombre = "3 Meat Treat",
-                    precio = 18.5,
-                    tipo = TIPO.PIZZA,
-                    ingredientes = listOf(ingredientePepperoni, ingredienteSalchicha, ingredienteBacon, ingredienteMozzarella, ingredienteTomate)
-                ),
-                idImagen = R.drawable.pipsa5
-            ),
-            TarjetaDTO(
-                producto = ProductoDTO(
-                    nombre = "Hula Hawaiian",
-                    precio = 16.2,
-                    tipo = TIPO.PIZZA,
-                    ingredientes = listOf(ingredienteJamon, ingredientePinya, ingredienteMozzarella, ingredienteTomate)
-                ),
-                idImagen = R.drawable.pipsa6
-            ),
-            TarjetaDTO(
-                producto = ProductoDTO(
-                    nombre = "Ultimate Supreme",
-                    precio = 18.5,
-                    tipo = TIPO.PIZZA,
-                    ingredientes = listOf(ingredientePepperoni, ingredienteSalchicha, ingredienteBacon, ingredientePimiento, ingredienteChampinyones, ingredienteMozzarella, ingredienteTomate)
-                ),
-                idImagen = R.drawable.pipsa7
-            ),
-            TarjetaDTO(
-                producto = ProductoDTO(
-                    nombre = "Veggie", precio = 16.2, tipo = TIPO.PIZZA, ingredientes = listOf(ingredientePimiento, ingredienteCebolla, ingredienteAceitunas, ingredienteChampinyones, ingredienteTomate, ingredienteMozzarella)
-                ),
-                idImagen = R.drawable.pipsa8
-            )
-        )
-
-        _tarjetas.value = _tarjetasPizza.value
-
-        _tarjetasPasta.value = listOf(
-            TarjetaDTO(
-                producto = ProductoDTO(
-                    nombre = "Macarrones del mediterráneo",
-                    precio = 6.5,
-                    tipo = TIPO.PASTA,
-                    ingredientes = listOf(ingredienteMacarrones, ingredientePimiento, ingredienteAceitunas, ingredienteQueso)
-                ),
-                idImagen = R.drawable.pasta1
-            ),
-            TarjetaDTO(
-                producto = ProductoDTO(
-                    nombre = "Espaguetis con tomate y cebolla",
-                    precio = 7.5,
-                    tipo = TIPO.PASTA,
-                    ingredientes = listOf(ingredienteEspaguetis, ingredienteTomate, ingredienteCebolla)
-                ),
-                idImagen = R.drawable.pasta2
-            ),
-            TarjetaDTO(
-                producto = ProductoDTO(
-                    nombre = "Espaguetis con tomate",
-                    precio = 5.5,
-                    tipo = TIPO.PASTA,
-                    ingredientes = listOf(ingredienteEspaguetis, ingredienteTomate, ingredienteQueso)
-                ),
-                idImagen = R.drawable.pasta3
-            ),
-            TarjetaDTO(
-                producto = ProductoDTO(
-                    nombre = "Espaguetis con tomate, salchicha italiana y queso",
-                    precio = 5.5,
-                    tipo = TIPO.PASTA,
-                    ingredientes = listOf(ingredienteEspaguetis, ingredienteTomate, ingredienteQueso, ingredienteSalchicha)
-                ),
-                idImagen = R.drawable.pasta4
-            ),
-            TarjetaDTO(
-                producto = ProductoDTO(
-                    nombre = "Espaguetis con tomate, ternera y queso",
-                    precio = 5.5,
-                    tipo = TIPO.PASTA,
-                    ingredientes = listOf(ingredienteEspaguetis, ingredienteTomate, ingredienteQueso, ingredienteTernera)
-                ),
-                idImagen = R.drawable.pasta5
-            ),
-            TarjetaDTO(
-                producto = ProductoDTO(
-                    nombre = "Espaguetis con albóndigas",
-                    precio = 5.5,
-                    tipo = TIPO.PASTA,
-                    ingredientes = listOf(ingredienteEspaguetis, ingredienteTernera, ingredienteTomate, ingredienteQueso),
-                ),
-                idImagen = R.drawable.pasta6
-            )
-        )
-
-        _tarjetasBebida.value = listOf(
-            TarjetaDTO(
-                producto = ProductoDTO(nombre = "Coca-Cola", precio = 1.5, tipo = TIPO.BEBIDA),
-                idImagen = R.drawable.cocacola
-            ),
-            TarjetaDTO(
-                producto = ProductoDTO(nombre = "Fanta de naranja", precio = 1.5, tipo = TIPO.BEBIDA),
-                idImagen = R.drawable.fanta
-            ),
-            TarjetaDTO(
-                producto = ProductoDTO(nombre = "Cerveza", precio = 1.5, tipo = TIPO.BEBIDA),
-                idImagen = R.drawable.cerveza
-            ),
-            TarjetaDTO(
-                producto = ProductoDTO(nombre = "Cerveza sin alcohol", precio = 1.5, tipo = TIPO.BEBIDA),
-                idImagen = R.drawable.cervezasin
-            ),
-            TarjetaDTO(
-                producto = ProductoDTO(nombre = "RedBull", precio = 1.5, tipo = TIPO.BEBIDA),
-                idImagen = R.drawable.redbull
-            ),
-            TarjetaDTO(
-                producto = ProductoDTO(nombre = "RedBull zero", precio = 1.5, tipo = TIPO.BEBIDA),
-                idImagen = R.drawable.redbullzero
-            ),
-            TarjetaDTO(
-                producto = ProductoDTO(
-                    nombre = "RedBull sin azúcar",
-                    precio = 1.5,
-                    tipo = TIPO.BEBIDA
-                ),
-                idImagen = R.drawable.redbullsinazucar
-            ),
-        )
+        viewModelScope.launch {
+            val result = productoRepository.obtenerProductos()
+            withContext(Dispatchers.Main) {
+                if (result.isSuccess) {
+                    val productos = result.getOrThrow()
+                    _tarjetasPizza.value = productos.filter { it.tipo == Tipo.PIZZA }.map {
+                        TarjetaDTO(
+                            producto = it,
+                            idImagen = imagenProducto(it)
+                        )
+                    }
+                    _tarjetasPasta.value = productos.filter { it.tipo == Tipo.PASTA }.map {
+                        TarjetaDTO(
+                            producto = it,
+                            idImagen = imagenProducto(it)
+                        )
+                    }
+                    _tarjetasBebida.value = productos.filter { it.tipo == Tipo.BEBIDA }.map {
+                        TarjetaDTO(
+                            producto = it,
+                            idImagen = imagenProducto(it)
+                        )
+                    }
+                    _tarjetas.value =
+                        _tarjetasPizza.value // Asignar las pizzas a la pantalla por defecto
+                } else {
+                        Log.d("HOME", "Error:$result")
+                }
+            }
+        }
     }
 
     fun onTarjetaChange(tarjeta: TarjetaDTO) {
         tarjeta.habilitarQuitar = tarjeta.cantidad != 1
         tarjeta.habilitarAnyadir = tarjeta.cantidad != 99
-        tarjeta.habilitarCarrito = tarjeta.producto.tipo == TIPO.PASTA || tarjeta.size != null
+        tarjeta.habilitarCarrito = tarjeta.producto.tipo == Tipo.PASTA || tarjeta.size != null
 
         _tarjetas.value = tarjetas.value?.map { if (it.idImagen == tarjeta.idImagen) tarjeta else it }
     }
 
-    fun onCategoriaChange(tipo: TIPO) {
+    fun onCategoriaChange(tipo: Tipo) {
         _tarjetas.value = when (tipo) {
-            TIPO.PIZZA -> _tarjetasPizza.value
-            TIPO.PASTA -> _tarjetasPasta.value
+            Tipo.PIZZA -> _tarjetasPizza.value
+            Tipo.PASTA -> _tarjetasPasta.value
             else -> _tarjetasBebida.value
         }
     }
@@ -251,6 +103,7 @@ class HomeViewModel {
         )
     }
 
+    // TODO: obtener las imagenes desde el servidor
     fun imagenAlergeno(alergeno: String) = when (alergeno) {
         "Lactosa" -> R.drawable.lacteos
         "Sulfitos" -> R.drawable.sulfitos
@@ -266,5 +119,30 @@ class HomeViewModel {
         "Altramuces" -> R.drawable.altramuz
         "Moluscos" -> R.drawable.moluscos
         else -> R.drawable.crustaceos
+    }
+
+    fun imagenProducto(producto: ProductoDTO) = when (producto.nombre) {
+        "Hot-N-Ready Pepperoni" -> R.drawable.pipsa1
+        "Hot-N-Ready Cheese" -> R.drawable.pipsa2
+        "Sweet N Spicy Chicken" -> R.drawable.pipsa3
+        "BBQ Chicken" -> R.drawable.pipsa4
+        "3 Meat Treat" -> R.drawable.pipsa5
+        "Hula Hawaiian" -> R.drawable.pipsa6
+        "Ultimate Supreme" -> R.drawable.pipsa7
+        "Veggie" -> R.drawable.pipsa8
+        "Macarrones del mediterráneo" -> R.drawable.pasta1
+        "Espaguetis con tomate y cebolla" -> R.drawable.pasta2
+        "Espaguetis con tomate" -> R.drawable.pasta3
+        "Espaguetis con tomate, salchicha italiana y queso" -> R.drawable.pasta4
+        "Espaguetis con tomate, ternera y queso" -> R.drawable.pasta5
+        "Espaguetis con albóndigas" -> R.drawable.pasta6
+        "Coca-Cola" -> R.drawable.cocacola
+        "Fanta de naranja" -> R.drawable.fanta
+        "Cerveza" -> R.drawable.cerveza
+        "Cerveza sin alcohol" -> R.drawable.cervezasin
+        "RedBull" -> R.drawable.redbull
+        "RedBull zero" -> R.drawable.redbullzero
+        "RedBull sin azúcar" -> R.drawable.redbullsinazucar
+        else -> R.drawable.applogo
     }
 }

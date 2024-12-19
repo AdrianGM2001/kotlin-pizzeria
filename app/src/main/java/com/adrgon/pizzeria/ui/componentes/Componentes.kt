@@ -44,6 +44,7 @@ fun OutlinedTextFieldPizzeria(
         placeholder = { Text(placeholder)},
         visualTransformation = if (esPassword && !mostrarPassword) PasswordVisualTransformation() else VisualTransformation.None,
         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = keyboardType),
+        singleLine = true,
         trailingIcon = {
             if (esPassword) {
                 IconButton(onClick = { mostrarPassword = !mostrarPassword }) {

@@ -1,4 +1,4 @@
-package com.adrgon.pizzeria.data
+package com.adrgon.pizzeria.data.model
 
 data class IngredienteDTO (
     val id: Int = 0,

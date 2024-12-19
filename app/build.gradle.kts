@@ -50,6 +50,8 @@ android {
 }
 
 dependencies {
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
     implementation(libs.material3)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.core.ktx)
@@ -64,6 +66,8 @@ dependencies {
     implementation(libs.androidx.ui.text.google.fonts)
     implementation(libs.androidx.espresso.core)
     implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
